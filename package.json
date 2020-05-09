@@ -2,7 +2,7 @@
   "name": "pixel",
   "version": "1.0.0",
   "description": "A Multifunctional Discord Bot written in typescript",
-  "main": "index.js",
+  "main": "out/src/index.js",
   "scripts": {
     "build-ts": "tsc",
     "postinstall": "npm run build-ts",
@@ -18,7 +18,7 @@
     "node": "12.16.1"
   },
   "author": "QPixel",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/qpixel/pixel/issues"
   },

@@ -25,8 +25,7 @@
   "homepage": "https://github.com/qpixel/pixel#readme",
   "dependencies": {
     "@typeit/discord": "^2.0.18",
-    "@types/express": "^4.17.4",
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "axios-cookiejar-support": "^0.5.0",
     "cron": "^1.7.2",
     "discord-paginationembed": "^2.0.0-beta.4",
@@ -38,7 +37,6 @@
     "opencollective-postinstall": "^2.0.0",
     "pastebin-js": "^1.0.4",
     "reflect-metadata": "^0.1.13",
-    "simple-array-diff": "^1.1.0",
     "tough-cookie": "^4.0.0",
     "tslib": "^1.11.1"
   },
@@ -46,6 +44,7 @@
     "typescript": "^3.8.3",
     "@types/dotenv": "^8.2.0",
     "@types/filesystem": "0.0.29",
+    "@types/express": "^4.17.4",
     "@types/node": "^13.1.1",
     "@types/node-fetch": "^2.5.4",
     "@typescript-eslint/eslint-plugin": "^2.6.0",

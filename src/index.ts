@@ -1,6 +1,5 @@
-import { hotFixParser, getHotFixHash } from './GetHotFix';
+import { getHotFixHash } from './GetHotFix';
 import { Auth } from './lib/auth';
-import fs from 'fs';
 import { DiscordBot } from './DiscordBot';
 const hotfixpath = `${__dirname}/../`;
 const cache: any = {

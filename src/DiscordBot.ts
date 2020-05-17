@@ -322,7 +322,7 @@ export class DiscordBot {
       command.reply('You did not specify what service.');
     }
   }
-  @CommandNotFound({ prefix: '!' })
+  @CommandNotFound({ prefix: prefix })
   notFoundA(command: CommandMessage) {
     command.reply('Command not found');
   }

@@ -1,2 +1,5 @@
 # Pixel
-A multipurpose discord bot for fortnite, moderation, and other things
+A Multipurpose Discord bot for Fortnite Leaking... 
+
+
+## Currently the bot is being rewritten! 

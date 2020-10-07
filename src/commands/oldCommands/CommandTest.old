@@ -1,0 +1,15 @@
+import { Command, CommandMessage } from '@typeit/discord';
+
+// Do not have to decorate the class with @Discord
+// It applied the parameters of the @Discord decorator that imported it
+export abstract class Bye {
+  @Command('bye')
+  async bye(command: CommandMessage) {
+    command.reply('Bye!');
+  }
+
+  @Command('ciao')
+  async ciao(command: CommandMessage) {
+    command.reply('Ciao!');
+  }
+}

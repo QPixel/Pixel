@@ -1,0 +1,100 @@
+import beautify from 'json-beautify';
+import { MessageEmbed } from 'discord.js';
+import { CommandMessage, Command } from '@typeit/discord';
+import Endpoints from '../util/endpoints';
+import os from 'os';
+import * as Auth from '../lib/oldAuth';
+import fs from 'fs';
+import axios from 'axios';
+export abstract class CommandFNRequest {
+  @Command('requestfn :service :uri')
+  async requestFN(command: CommandMessage) {
+    const service = command.args.service;
+    const uri = command.args.uri;
+
+    if (service === 'launcher') {
+      const token = await Auth.launcherAuth();
+      const headers: any = {};
+      headers['X-EpicGames-Lanuage'] = 'en';
+      headers['Authorization'] = 'bearer ' + token;
+      let res: any;
+      if (uri === 'fortnitepc') {
+        res = await axios
+          .get(`${Endpoints.LAUNCHER}public/assets/Windows/4fe75bbc5a674f4f9b356b5c90567da5/Fortnite?label=Live`, {
+            headers: headers,
+            responseType: 'json',
+          })
+          .then((response) => {
+            return response;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        const { appName, labelName, buildVersion, catalogItemId } = res.data;
+        const embed = new MessageEmbed()
+          .setTitle('Fortnite INFO')
+          .setColor('#0099ff')
+          .setDescription('RESPONSE was ' + res.status)
+          .addField('\u200B', '```\n' + `${appName}\n ${labelName}\n ${buildVersion}\n ${catalogItemId}\n` + '```')
+          .setTimestamp()
+          .setFooter('Pixel, a discord bot. Made by QPixel');
+        // const embed = new MessageEmbed()
+        //   .setTitle('Fortnite INFO')
+        //   .setColor('#0099ff')
+        //   .setDescription('RESPONSE was ' + res.status)
+        //   .addField('appName', '```http\n' + res.data.appName + '```')
+        //   .addField('labelName', '```http\n' + res.data.labelName + '```')
+        //   .addField('buildVersion', '```http\n' + res.data.buildVersion + '```')
+        //   .addField('catalogItemId', '```http\n' + res.data.catalogItemId + '```')
+        //   .addField('manifest', '```http\n' + res.data.items.MANIFEST.path + '```')
+        //   .setTimestamp()
+        //   .setFooter('Pixel, a discord bot. made by QPixel');
+        return command.reply(embed);
+      } else {
+        res = await axios
+          .get(`${Endpoints.LAUNCHER}${uri}`, { headers: headers, responseType: 'json' })
+          .then((response) => {
+            return response;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      console.log(beautify(res.data, null, 1, 50));
+      //   command.reply('Response was ' + res.status);
+      //   command.channel.send('```json\n' + beautify(res.data, null, 1, 50) + '```').catch(() => {
+      //     command.reply('JSON Was to big for discord.');
+      //   });
+    } else if (service === 'fortnite') {
+      const auth = new Auth.Auth();
+      const token = await auth.login(false, '');
+      const headers: any = {};
+      headers['X-EpicGames-Lanuage'] = 'en';
+      headers['Authorization'] = 'bearer ' + token;
+      const res: any = await axios
+        .get(`${Endpoints.PUBLIC_BASE_URL}${uri}`, { headers: headers, responseType: 'json' })
+        .then((response: import('axios').AxiosResponse<any> | PromiseLike<import('axios').AxiosResponse<any>>) => {
+          return response;
+        })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .catch((error: any) => {
+          console.log(error);
+        });
+
+      command.reply('Response was ' + res.status);
+      command.channel.send('```json\n' + beautify(res.data, null, 1, 150) + '```').catch(() => {
+        command.reply('JSON Was to big for discord.');
+      });
+    } else if (service === 'lightswitch') {
+      const res = await axios.get(`${Endpoints.LIGHT_SWITCH}${uri}`);
+      command.channel.send(`Response was ${res.status}`).catch((error) => {
+        command.reply('There was an error....');
+        console.log(error);
+      });
+      command.channel.send('```json\n' + beautify(res.data, null, 2, 100) + '```').catch((error) => {
+        command.reply('Something went wrong...');
+        console.log(error);
+      });
+    }
+  }
+}

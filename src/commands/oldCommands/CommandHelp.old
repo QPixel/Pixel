@@ -1,0 +1,17 @@
+import { Command, CommandMessage, Description } from '@typeit/discord';
+import { MessageEmbed } from 'discord.js';
+
+@Description('Gives you help')
+export class CommandHelp {
+  @Command('help')
+  async help(command: CommandMessage) {
+    const embed = new MessageEmbed()
+      .setColor('0099ff')
+      .setTitle('Help')
+      .setDescription(`Page **1** of 2`)
+      .setFooter('Pixel, made by QPixel')
+      .setTimestamp();
+    // console.log(client);
+    command.channel.send(embed);
+  }
+}

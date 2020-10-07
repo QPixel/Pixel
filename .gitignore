@@ -1,0 +1,11 @@
+node_modules
+workspace.code-workspace
+workspace.code-workspace
+*.code-workspace
+out
+node_modules
+node_modules/
+.env
+.vscode/tasks.json
+yarn-error.log
+src/lib/deviceAuthDetails.json

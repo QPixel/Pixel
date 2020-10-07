@@ -1,0 +1,18 @@
+import { MessageEmbed } from 'discord.js';
+import { parseManifest } from '../../util/pullManifest';
+import { Command, CommandMessage } from '@typeit/discord';
+
+export abstract class Manifest {
+  @Command('manifest')
+  async manifest(command: CommandMessage) {
+    const { manifest, build } = await parseManifest();
+    const embed = new MessageEmbed()
+      .setTitle('Fortnite INFO')
+      .setColor('#0099ff')
+      .addField('Current Manifest', '- ' + manifest)
+      .addField('Current Build', '- ' + '++Fortnite+Release-' + build)
+      .setTimestamp()
+      .setFooter('Pixel, a discord bot. made by QPixel');
+    command.channel.send(embed);
+  }
+}

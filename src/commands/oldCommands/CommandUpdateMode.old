@@ -1,0 +1,36 @@
+import axios from 'axios';
+import { parseManifest } from '../util/pullManifest';
+import { CommandMessage, Command } from '@typeit/discord';
+
+export abstract class UpdateMode {
+  @Command('updatemode :arg1')
+  async updateMode(command: CommandMessage) {
+    const arg1 = command.args.arg1;
+
+    let build;
+    async function updateManifest() {
+      build = await parseManifest();
+    }
+    // eslint-disable-next-line prefer-const
+    let compare = {
+      manifest: '',
+      build: '',
+    };
+    if (arg1 === 'true') {
+      while (true) {
+        if (compare.build === build) {
+          break;
+        }
+        updateManifest();
+      }
+    } else {
+      if (compare.build === build) {
+      } else {
+        return command.reply('No new updates.');
+      }
+
+      compare.build = build;
+    }
+    compare.build = build;
+  }
+}

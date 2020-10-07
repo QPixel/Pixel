@@ -1,0 +1,11 @@
+import { Auth } from '../lib/oldAuth';
+import { Command, CommandMessage } from '@typeit/discord';
+
+export class CommandGetHotFix {
+  @Command('fixAuth :exchangeCode')
+  async fixAuth(message: CommandMessage) {
+    const auth = new Auth();
+    const exchangeCode = message.args.exchangeCode;
+    await auth.login(true, exchangeCode);
+  }
+}

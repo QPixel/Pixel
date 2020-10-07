@@ -9,3 +9,5 @@ node_modules/
 .vscode/tasks.json
 yarn-error.log
 src/lib/deviceAuthDetails.json
+output.ogg
+seasonx.mp3

@@ -1,10 +1,15 @@
 import { AkairoClient, CommandHandler } from "discord-akairo";
+import { Collection } from "discord.js";
 import { prefix } from "./util/env";
 import { join } from "path";
+import * as config from "./util/Config";
+
+import "./structures/Guild";
 
 export default class Client extends AkairoClient {
-  commandHandler: CommandHandler;
-  queue: Map<string, unknown>
+  public commandHandler: CommandHandler;
+  public readonly config = config;
+  // public queue: Map<string, unknown>
   constructor () {
     super({
       ownerID: "218072060923084802"
@@ -17,10 +22,46 @@ export default class Client extends AkairoClient {
       extensions: [ ".ts" , ".js" ]
     });
     this.commandHandler.loadAll();
-    this.queue = new Map();
-    const test = this.commandHandler.modules;
-    test.keyArray().forEach((element) => {
-      console.log(element);
-    });
+  }
+
+  public async getGuildsCount(): Promise<number> {
+    if (!this.shard) return this.guilds.cache.size;
+    const size = await this.shard.broadcastEval("this.guilds.cache.size");
+    return size.reduce((p, v) => p + v, 0);
+  }
+
+  public async getChannelsCount(filter = true): Promise<number> {
+    if (filter) {
+      if (!this.shard) return this.channels.cache.filter(c => c.type !=="category" && c.type !== "dm").size;
+      const size = await this.shard.broadcastEval("this.channels.cache.filter(c => c.type !== 'category' && c.type !== 'dm).size");
+      return size.reduce((p, v) => p + v, 0);
+    }
+
+    if (!this.shard) return this.channels.cache.size;
+    const size = await this.shard.broadcastEval("this.channels.cache.size");
+    return size.reduce((p, v) => p + v, 0);
+  }
+  public async getUsersCount(filter = true): Promise<number> {
+    const temp = new Collection();
+    if (filter) {
+      if (!this.shard) return this.users.cache.filter(u => !u.equals(this.user!)).size;
+      const shards = await this.shard.broadcastEval("this.users.cache.filter(u => !u.equals(this.user))");
+      for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
+      return temp.size;
+    }
+    if (!this.shard) return this.users.cache.size;
+    const shards = await this.shard.broadcastEval("this.users.cache");
+    for (const shard of shards) { for (const user of shard) { temp.set(user.id, user); } }
+    return temp.size;
+  }
+
+  public async getTotalPlaying(): Promise<number> {
+    if (!this.shard) return this.guilds.cache.filter((g: any) => g.queue !== null && g.queue.playing === true).size;
+    return this.shard.broadcastEval("this.guilds.cache.filter(g => g.queue !== null && g.queue.playing === true).size").then(data => data.reduce((a, b) => a + b));
+  }
+
+  public async getTotalMemory(type: keyof NodeJS.MemoryUsage): Promise<number> {
+    if (!this.shard) return process.memoryUsage()[type];
+    return this.shard.broadcastEval(`process.memoryUsage()["${type}"]`).then(data => data.reduce((a, b) => a + b));
   }
 };

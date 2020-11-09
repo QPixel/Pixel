@@ -1,0 +1,128 @@
+import { Command } from "discord-akairo";
+import { Message, StreamDispatcher } from "discord.js";
+import fs from "fs";
+import ytdl from "ytdl-core";
+import search from "yt-search";
+import ytdldiscord from "ytdl-core-discord";
+import createEmbed from "../../util/CreateEmbed";
+import type { IMessage } from "../../../typings";
+import { paginationEmbed } from "discord.js-pagination";
+
+const fsPromises = fs.promises;
+
+export default class CommandPlay extends Command {
+  public dispatcher: StreamDispatcher;
+  constructor () {
+    super("play", {
+      aliases: [ "play" ],
+      category: "Player",
+      args: [
+        {
+          id: "searchquery",
+          type: "string",
+          default: "help",
+          match: "content"
+        },
+        {
+          id: "extraparam",
+          type: "string",
+          match: "content",
+        },
+      ]
+    });
+  }
+  async exec(message: IMessage, args: { searchquery: string; extraparam: string; } ): Promise<void | Message> {
+    // const serverQueue = message.client.queue.get(message.guild.id);
+    // eslint-disable-next-line no-useless-escape
+    const ytlink = "^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$";
+    console.log(args);
+    
+    if (!message.member.voice.channel)
+      return message.reply("You're not in a channel. :stop_sign:");
+    if (!message.guild.me.voice.channel)
+      message.channel.send(":speaker: Joining Channel " + "``" + message.guild.channels.cache.get(message.member.voice.channelID).name + "``" + " :speaker:");
+    const connect = await message.member.voice.channel.join();
+    await connect.voice.setSelfDeaf(true);
+    let songInfo = null;
+    let song = null;
+    if (args.searchquery === "playlocal") {
+      switch (args.extraparam) {
+      default: 
+        console.log("Hello");
+      }
+    } else if (args.searchquery === "help") {
+      const embed = createEmbed({ "title": "Music Command Help" });
+      return message.channel.send(embed);
+    }
+    if (args.searchquery.match(ytlink)) {
+      try {
+        songInfo = await ytdl.getInfo(args.searchquery);
+        song = {
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
+          duration: songInfo.videoDetails.lengthSeconds
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        const results = await search(args.searchquery);
+        songInfo = await ytdl.getInfo(results.videos[0].url);
+        song = {
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
+          duration: songInfo.videoDetails.lengthSeconds
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    const streamtype = song.url.includes("youtube.com") ? "opus" : "ogg/opus";
+    let stream;
+    try {
+      stream = await ytdldiscord(song.url, { highWaterMark: 1 << 25 });
+    } catch (error) {
+      console.error(error);
+    }
+
+    this.dispatcher = connect.play(stream, { type: streamtype });
+
+    // const connect = await message.member.voice.channel.join();
+    // await connect.voice.setSelfDeaf(true);
+    // if (args.specialPlay.toLowerCase() === "seasonx") {
+    //   this.dispatcher = connect.play(fs.createReadStream("seasonx.mp3"));
+    // } else if (args.specialPlay.toLowerCase() === "fortnite-radio") {
+    //   const fortniteClient = new Client({
+    //     auth: {
+    //       authorizationCode: ""
+    //     }
+    //   });
+    //   if (!fs.existsSync("./src/Commands/Player/playerfiles/currentstream.m3u8")){
+    //     console.log("Writing to file");
+    //     fs.writeFile("./src/Commands/Player/playerfiles/currentstream.m3u8", await fortniteClient.getRadioStream("BXrDueZkosvNvxtx", Language.ENGLISH), (err) => {
+    //       if (err){
+    //         console.log(err);
+    //         throw new Error("uhhhh");
+    //       }
+    //     });
+    //   }
+    //   this.dispatcher = connect.play(fs.createReadStream("./src/Commands/Player/playerfiles/currentstream.m3u8"));
+    // } else if (specialPlay.toLowerCase() === "playlocal") {
+    //   this.dispatcher = connect.play(fs.createReadStream("output.ogg"));
+    // } else {
+    //   const embed = createEmbed({ title: "Now Playing: " });
+    //   return message.channel.send(embed);
+    // }
+    this.dispatcher.on("start", () => {
+      console.log("Audio has started playing");
+    });
+    this.dispatcher.on("stop", () => {
+      console.log("Audio has finished playing");
+      connect.disconnect();
+    });
+    this.dispatcher.on("error", console.error);
+    
+    message.channel.send("**Now Playing** :notes: " + song.title);
+  }
+}

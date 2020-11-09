@@ -3,15 +3,19 @@ import fs from "fs";
 import Client from "./client";
 import { discordToken } from "./util/env";
 import ManifestHandler from "./util/Manifest";
+import ShopHandler from "./lib/ShopHandler";
 const fsPromises = fs.promises;
 
-class Main {
+export class Main {
   private static auth: Auth;
   private static client: Client;
   private static Manifest: ManifestHandler;
-  static async start() {
+  public static Shop: ShopHandler;
+
+  static async start(): Promise<void> {
     this.client = new Client();
     this.Manifest = new ManifestHandler();
+    this.Shop = new ShopHandler();
     try {
       this.auth = new Auth("normalStartUp");
       await this.Manifest.pullManifest();
@@ -22,6 +26,7 @@ class Main {
     }
     this.client.on("ready", () => {
       console.log("Pixel has started.");
+      this.client.user.setPresence({ activity: { name: "with Pixels | pixel.wtf", type: "PLAYING" }, status: "online" });
     });
   }
 }

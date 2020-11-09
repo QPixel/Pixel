@@ -1,6 +1,6 @@
 # Rewrite is in Progress
 
-## Pixel is multipurpose modular bot.
+## Pixel is multipurpose modular discord bot.
 
 Current Modules:
 

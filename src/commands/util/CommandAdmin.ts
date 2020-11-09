@@ -3,6 +3,8 @@ import { performance } from "perf_hooks";
 import { Message } from "discord.js";
 import { Command } from "discord-akairo";
 import { type } from "os";
+import { create } from "domain";
+import createEmbed from "src/util/CreateEmbed";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const shell = require("shelljs");
 
@@ -104,6 +106,11 @@ export default class CommandAdmin extends Command {
       message.reply(":octagonal_sign: Stopping Bot").then(() => {
         process.exit();
       });
+      // } else if (cmd === "echo") {
+      //   const echoMessage = createEmbed({title: "Echo"});
+      //   for (let i = 3; i < args.length) {
+        
+    //   }
     } else {
       return message.channel.send("Please send a proper sub-command");
     }

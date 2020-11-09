@@ -3,12 +3,15 @@ import tokens from "../util/consts/tokens";
 import Endpoints from "../util/consts/endpoints";
 import { stringify } from "querystring";
 import fs from "fs";
+import Token from "../util/consts/tokens";
 const fsPromises = fs.promises;
 
 export default class Auth {
   private static access_token: string;
+  private static exchange_token: string;
   private deviceAuthPath = `${__dirname}/deviceAuthDetails.json`;
   private authCode?: string;
+  private static device_auth: DeviceAuth;
   /**
    *
    * @param {string} authType - createDeviceAuth or normalStartUp
@@ -48,6 +51,7 @@ export default class Auth {
       } else {
         return this.handleDeviceAuth(true);
       }
+      Auth.device_auth = deviceAuthBuffer;
       Auth.access_token = await Auth.getOAuthToken("device_auth", deviceAuthBuffer);
     }
   }
@@ -141,16 +145,37 @@ export default class Auth {
           },
         },
       );
-      console.log(deviceAuth.data);
+      // console.log(deviceAuth.data);
       // console.log(deviceAuth.config);
-      
+        
       return deviceAuth.data.access_token;
-    }
-    }
+    }}
   }
   
+  private static async getExchange(): Promise<void> {
+    const headers: Record<string, string> = {
+      "Authorization": `basic ${Token.switchToken}`
+    };
+    const exchange = await (await axios.get(Endpoints.OAUTH_EXCHANGE, { headers })).data.code;
+    if (!exchange){
+      this.exchange_token = "Error";
+      throw new Error("Unable to get exchange");
+    }
+    this.exchange_token = exchange;
+  }
   public static get accessToken(): string {
     return this.access_token;
+  }
+  public static get exchangeToken(): string {
+    this.getExchange();
+    return this.exchange_token;
+  }
+  public static get deviceAuth(): Record<string, string> {
+    return {
+      "device_id": this.device_auth.deviceId,
+      "account_id": this.device_auth.accountId,
+      "secret": this.device_auth.secret,
+    };
   }
 }
 

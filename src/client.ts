@@ -1,14 +1,18 @@
-import { AkairoClient, CommandHandler } from "discord-akairo";
+import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
 import { Collection } from "discord.js";
 import { prefix } from "./util/env";
 import { join } from "path";
 import * as config from "./util/Config";
+import { createLogger } from "./util/Logger";
 
 import "./structures/Guild";
+import { Logger } from "winston";
 
 export default class Client extends AkairoClient {
   public commandHandler: CommandHandler;
+  public listenerHandler: ListenerHandler;
   public readonly config = config;
+  public readonly logger = createLogger("Pixel", false);
   // public queue: Map<string, unknown>
   constructor () {
     super({
@@ -21,6 +25,11 @@ export default class Client extends AkairoClient {
       prefix: prefix,
       extensions: [ ".ts" , ".js" ]
     });
+    this.listenerHandler = new ListenerHandler(this, {
+      directory: join(__dirname, "./listeners/")
+    });
+    this.commandHandler.useListenerHandler(this.listenerHandler);
+    this.listenerHandler.loadAll();
     this.commandHandler.loadAll();
   }
 

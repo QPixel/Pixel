@@ -1,4 +1,4 @@
-import { MessageEmbed, EmbedField, MessageEmbedImage } from "discord.js";
+import { MessageEmbed, EmbedField, MessageEmbedImage, } from "discord.js";
 export default function createEmbed(data?: IEmbed): MessageEmbed {
   return new MessageEmbed(data)
     .setTimestamp()

@@ -1,15 +1,15 @@
-import { Command } from "discord-akairo";
 import { Message } from "discord.js";
+import { IMessage } from "typings";
+import BaseCommand from "../structures/BaseCommand";
 
-
-
-export default class Test extends Command {
-  constructor() {
+export default class CommandReload extends BaseCommand {
+  constructor () {
     super("test", {
-      aliases: [ "test", "test1" ],
-    });    
+      aliases: [ "test" ],
+      category: "Util"
+    });
   }
-  async exec(message: Message): Promise<Message> {
-    return message.channel.send("Hello, test");
+  async exec(message: IMessage): Promise<void> {
+    
   }
 }

@@ -4,6 +4,7 @@ import Endpoints from "../util/consts/endpoints";
 import { stringify } from "querystring";
 import fs from "fs";
 import Token from "../util/consts/tokens";
+import { Logger } from "winston";
 const fsPromises = fs.promises;
 
 export default class Auth {
@@ -12,12 +13,13 @@ export default class Auth {
   private deviceAuthPath = `${__dirname}/deviceAuthDetails.json`;
   private authCode?: string;
   private static device_auth: DeviceAuth;
+  
   /**
    *
    * @param {string} authType - createDeviceAuth or normalStartUp
    * @param {string} authcode authorizationCode
    */
-  constructor(authType: string, authcode?: string) {
+  constructor(private logger: Logger, authType: string, authcode?: string) {
     this.authCode = authcode;
     switch (authType) {
     case "createDeviceAuth":
@@ -37,7 +39,7 @@ export default class Auth {
       const deviceAuth = await this.GenerateDeviceAuth();
       Auth.access_token = await Auth.getOAuthToken("device_auth", deviceAuth);
     } else {
-      console.log("[AUTH] Reading DeviceAuth file");
+      
       let deviceAuthBuffer: DeviceAuth;
       let deviceAuthFile;
       try {
@@ -59,7 +61,8 @@ export default class Auth {
    Creates a device auth based off of authorization_code grant type
   */
   private async GenerateDeviceAuth(): Promise<DeviceAuth> {
-    console.log("[AUTH] Creating Device Auth");
+    // console.log("[AUTH] Creating Device Auth");i
+    this.logger.info("[AUTH] Creating Device Auth");
     const tempAccessToken = (
       await axios.post(Endpoints.OAUTH_TOKEN, stringify({ grant_type: "authorization_code", code: this.authCode }), {
         headers: {
@@ -107,10 +110,10 @@ export default class Auth {
     };
 
     try {
-      console.log("[AUTH] Writing Auth Details....");
+      this.logger.info("[AUTH] Writing Auth Details....");
       await fsPromises.writeFile(this.deviceAuthPath, JSON.stringify(deviceAuthDetails));
     } catch (e) {
-      console.error("[AUTH] There was an issue writing Device Auth Details\n");
+      this.logger.error("[AUTH] There was an issue writing Device Auth Details\n");
       console.error(e);
     }
     return deviceAuthDetails;
@@ -130,7 +133,7 @@ export default class Auth {
       return client_credentials.data.access_token;
     }
     case "device_auth": {
-      console.log("[AUTH] Requesting OAuthToken using DeviceAuth");
+      // ("[AUTH] Requesting OAuthToken using DeviceAuth");
       const deviceAuth = await axios.post(
         Endpoints.OAUTH_TOKEN,
         stringify({

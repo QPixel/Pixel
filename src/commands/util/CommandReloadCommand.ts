@@ -1,7 +1,8 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
+import BaseCommand from "../../structures/BaseCommand";
 
-export default class CommandReload extends Command {
+export default class CommandReload extends BaseCommand {
   constructor () {
     super("reload-command", {
       aliases: [ "reloadcommand" ],
@@ -16,7 +17,7 @@ export default class CommandReload extends Command {
   }
   async exec(message: Message, args: Record<string, string>): Promise<void> {
     message.channel.send(":repeat: Reloading command: " + args.commandName);
-    const commandHandler = this.handler;
+    const commandHandler = this.client.commandHandler;
     try {
       commandHandler.reload(args.commandName);
       console.log("Reloaded Command " + args.commandName);

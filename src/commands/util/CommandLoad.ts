@@ -1,11 +1,12 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
+import BaseCommand from "../../structures/BaseCommand";
 
 interface Args {
   fileName: string;
   directory: boolean;
 }
-export default class CommandLoad extends Command{
+export default class CommandLoad extends BaseCommand{
   constructor () {
     super("loadcommand", {
       aliases: [ "loadcommand", "load-command" ],
@@ -26,11 +27,11 @@ export default class CommandLoad extends Command{
   async exec(message: Message, args: Args): Promise<void> {
     const commandName = args.fileName;
     const useDirectory = args.directory;
-    const commandHandler = this.handler;
+    // const commandHandler = this.client.commandHandler;
     if (useDirectory) {
       message.channel.send("<a:loadingdots:759625992166965288> Loading directory " + commandName);
       try {
-        commandHandler.loadAll(commandName);
+        this.client.commandHandler.loadAll(commandName);
         console.log(`Loading all Commands from ${commandName}!`);
         message.channel.send(":+1: Commands Loaded");
       } catch (e) {
@@ -40,7 +41,9 @@ export default class CommandLoad extends Command{
     } else {
       message.channel.send("<a:loadingdots:759625992166965288> Loading Command " + commandName);
       try {
-        commandHandler.load(commandName);
+        this.client.commandHandler.load(commandName, false);
+        // this.client.logger.debug()
+        // this.client.commandHandler.blockBots
         message.channel.send(":+1: Command Loaded!");
       } catch (e) {
         console.log(e);

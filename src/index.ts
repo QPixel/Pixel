@@ -1,10 +1,8 @@
 import Auth from "./lib/auth";
-import fs from "fs";
 import Client from "./client";
 import { discordToken } from "./util/env";
 import ManifestHandler from "./util/Manifest";
 import ShopHandler from "./lib/ShopHandler";
-const fsPromises = fs.promises;
 
 export class Main {
   private static auth: Auth;
@@ -17,15 +15,16 @@ export class Main {
     this.Manifest = new ManifestHandler();
     this.Shop = new ShopHandler();
     try {
-      this.auth = new Auth("normalStartUp");
+      this.auth = new Auth(this.client.logger, "normalStartUp");
       await this.Manifest.pullManifest();
-      console.log(this.Manifest.build);
       this.client.login(discordToken);
+      this.client.logger.debug(`[FORTNITE] Build Version: ${this.Manifest.build}`);
     } catch (e) {
       console.log(e);
     }
-    this.client.on("ready", () => {
-      console.log("Pixel has started.");
+    this.client.on("ready", async () => {
+      this.client.logger.info("Bot has started");
+      this.client.logger.info("Guilds: " + await this.client.getGuildsCount());
       this.client.user.setPresence({ activity: { name: "with Pixels | pixel.wtf", type: "PLAYING" }, status: "online" });
     });
   }

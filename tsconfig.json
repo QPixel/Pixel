@@ -22,5 +22,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "../../node_modules", "**/*.spec.ts", "node_modules/", "../fnbr.js"]
+  "exclude": ["node_modules", "../../node_modules", "**/*.spec.tiis", "node_modules/", "../fnbr.js"]
 }

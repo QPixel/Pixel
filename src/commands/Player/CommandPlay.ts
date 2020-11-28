@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import { Command } from "discord-akairo";
+import Command from "../../structures/BaseCommand";
 // import { VoiceConnection } from "discord.js";
 import { Message } from "discord.js";
 import createEmbed from "../../util/CreateEmbed";
@@ -29,7 +29,6 @@ export default class CommandPlay extends Command {
   } 
   async exec(message: IMessage, args: {searchquery: string;}): Promise<void | Message> {
     const voiceChannel = message.member.voice.channel;
-    let connect;
     // eslint-disable-next-line no-useless-escape
     const ytlink = "^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$";
     if (!voiceChannel) 
@@ -45,7 +44,6 @@ export default class CommandPlay extends Command {
     //   connect = await voiceChannel.join();
     //   await connect.voice.setSelfDeaf(true);
     // }
-
     if (message.guild.queue !== null && voiceChannel.id !== message.guild.queue.voiceChannel.id) {
       return message.channel.send(createEmbed({ title: "Pixel Music" }).setDescription(`Music on this server is already playing on: **\`${message.guild.queue.voiceChannel.name}\`** voice channel`).setColor("YELLOW"));
     }
@@ -116,10 +114,10 @@ export default class CommandPlay extends Command {
 
     serverQueue.connection.play(songData, { type: streamtype, bitrate: "auto", highWaterMark: 1 }).on("start", () => {
       serverQueue.playing = true;
-      console.log(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has started`);
+      this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has started`);
       serverQueue.textChannel.send(createEmbed({ title: "Pixel Music" }).setDescription(`▶  **|**  Start playing: **[${song.title}](${song.url})**`).setColor("BLUE"));
     }).on("finish", () => {
-      console.log(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has ended`);
+      this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has ended`);
       if (serverQueue.loopMode === 0) {serverQueue.songs.deleteFirst();} else if (serverQueue.loopMode === 2) {serverQueue.songs.deleteFirst; serverQueue.songs.addSong(song);}
       this.play(guild).catch(e => {
         serverQueue.textChannel?.send(createEmbed({ title: "Pixel Music" }).setDescription(`Error while trying to play music:\n\`${e}\``).setColor("RED"));

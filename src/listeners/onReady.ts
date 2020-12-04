@@ -9,6 +9,6 @@ export default class ReadyListener extends Listener {
   }
   exec() {
     
-    this.client.logger.info("z");
+    // this.client.logger.info("z");
   } 
 }

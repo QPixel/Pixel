@@ -3,13 +3,17 @@ import axios from "axios";
 import Auth from "../lib/auth";
 import IHeader from "./interfaces/IHeader";
 import fs from "fs";
+// import Client from "../client";
 
 export default class ManifestHandler {
+  constructor (private auth: Auth) {
+
+  }
   public manifest: string;
   public build: string;
   public buildnumber: string;
   async pullManifest(): Promise<string[]> {
-    const token = await Auth.launcherAuth();
+    const token = await this.auth.launcherAuth();
     if (!token) { 
       return [ "Error.. No token exists!" ];
     }

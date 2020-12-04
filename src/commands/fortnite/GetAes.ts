@@ -1,7 +1,6 @@
-import { Command } from "discord-akairo";
+import Command from "../../structures/BaseCommand";
 import { Message } from "discord.js";
 import axios from "axios";
-import ManifestHandler from "../../util/Manifest";
 import createEmbed from "../../util/CreateEmbed";
 
 export default class CommandGetAes extends Command {
@@ -19,9 +18,7 @@ export default class CommandGetAes extends Command {
   }
 
   async exec(message: Message, args: Record<string, string>): Promise<Message> {
-    const manifestClient = new ManifestHandler();
-    await manifestClient.pullManifest();
-    const buildNumber = manifestClient.buildnumber;
+    const buildNumber = this.client.ManifestHandler.buildnumber;
     let aes: string;
     try {
       aes = (await axios.get("https://fnbot.shop/api/aes")).data;

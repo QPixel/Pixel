@@ -1,6 +1,6 @@
-import Auth from "../../lib/auth";
+// import Auth from "../../lib/auth";
 import HotfixClient from "../../util/Hotfix";
-import { Command } from "discord-akairo";
+import Command from "../../structures/BaseCommand";
 import { Message } from "discord.js";
 import createEmbed from "../../util/CreateEmbed";
 
@@ -11,7 +11,7 @@ export default class CommandListHotfixes extends Command {
     });
   }
   async exec(message: Message): Promise<Message>  {
-    const token = Auth.accessToken;
+    const token = this.client.auth.accessToken;
     const hotfixClient = new HotfixClient();
     const hotfixres = await hotfixClient.client(token, true);
     const embed = createEmbed({

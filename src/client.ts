@@ -7,12 +7,18 @@ import { createLogger } from "./util/Logger";
 
 import "./structures/Guild";
 import { Logger } from "winston";
+import ShopHandler from "./lib/ShopHandler";
+import Auth from "./lib/auth";
+import ManifestHandler from "./util/Manifest";
 
 export default class Client extends AkairoClient {
   public commandHandler: CommandHandler;
   public listenerHandler: ListenerHandler;
   public readonly config = config;
   public readonly logger = createLogger("Pixel", false);
+  public ShopHandler: ShopHandler;
+  public ManifestHandler: ManifestHandler;
+  public auth: Auth;
   // public queue: Map<string, unknown>
   constructor () {
     super({
@@ -31,6 +37,9 @@ export default class Client extends AkairoClient {
     this.commandHandler.useListenerHandler(this.listenerHandler);
     this.listenerHandler.loadAll();
     this.commandHandler.loadAll();
+    this.ShopHandler = new ShopHandler();
+    this.auth = new Auth(this.logger, "normalStartUp");
+    this.ManifestHandler = new ManifestHandler(this.auth);
   }
 
   public async getGuildsCount(): Promise<number> {

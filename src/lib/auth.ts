@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import tokens from "../util/consts/tokens";
 import Endpoints from "../util/consts/endpoints";
 import { stringify } from "querystring";
@@ -8,11 +8,11 @@ import { Logger } from "winston";
 const fsPromises = fs.promises;
 
 export default class Auth {
-  private static access_token: string;
-  private static exchange_token: string;
+  private access_token: string;
+  private exchange_token: string;
   private deviceAuthPath = `${__dirname}/deviceAuthDetails.json`;
   private authCode?: string;
-  private static device_auth: DeviceAuth;
+  private device_auth: DeviceAuth;
   
   /**
    *
@@ -30,14 +30,14 @@ export default class Auth {
       break;
     }
   }
-  static async launcherAuth(): Promise<string> {
+  async launcherAuth(): Promise<string> {
     return await this.getOAuthToken("client_credentials");
   }
 
   private async handleDeviceAuth(createNew: boolean): Promise<void> {
     if (createNew) {
       const deviceAuth = await this.GenerateDeviceAuth();
-      Auth.access_token = await Auth.getOAuthToken("device_auth", deviceAuth);
+      this.access_token = await this.getOAuthToken("device_auth", deviceAuth);
     } else {
       
       let deviceAuthBuffer: DeviceAuth;
@@ -45,7 +45,7 @@ export default class Auth {
       try {
         deviceAuthFile = await fsPromises.readFile(this.deviceAuthPath, { encoding: "utf8" });
       } catch (e) {
-        console.error(e);
+        this.logger.error(e);
         return this.handleDeviceAuth(true);
       }
       if (deviceAuthFile.length !== 0) {
@@ -53,8 +53,9 @@ export default class Auth {
       } else {
         return this.handleDeviceAuth(true);
       }
-      Auth.device_auth = deviceAuthBuffer;
-      Auth.access_token = await Auth.getOAuthToken("device_auth", deviceAuthBuffer);
+      console.log(deviceAuthBuffer);
+      this.device_auth = deviceAuthBuffer;
+      this.access_token = await this.getOAuthToken("device_auth", deviceAuthBuffer);
     }
   }
   /*  
@@ -118,7 +119,7 @@ export default class Auth {
     }
     return deviceAuthDetails;
   }
-  private static async getOAuthToken(grantType: string, deviceAuthDetails?: DeviceAuth): Promise<string> {
+  private async getOAuthToken(grantType: string, deviceAuthDetails?: DeviceAuth): Promise<string> {
     switch (grantType) {
     case "client_credentials": {
       const client_credentials = await axios.post(
@@ -133,8 +134,8 @@ export default class Auth {
       return client_credentials.data.access_token;
     }
     case "device_auth": {
-      // ("[AUTH] Requesting OAuthToken using DeviceAuth");
-      const deviceAuth = await axios.post(
+      this.logger.info("[AUTH] Requesting OAuthToken using DeviceAuth");
+      await axios.post(
         Endpoints.OAUTH_TOKEN,
         stringify({
           grant_type: "device_auth",
@@ -147,15 +148,16 @@ export default class Auth {
             Authorization: `basic ${tokens.switchToken}`,
           },
         },
-      );
-      // console.log(deviceAuth.data);
-      // console.log(deviceAuth.config);
-        
-      return deviceAuth.data.access_token;
+      ).then((res) => {
+        return res.data.access_token;
+      }).catch((e) => {
+        this.logger.error(e);
+        return undefined;
+      });
     }}
   }
   
-  private static async getExchange(): Promise<void> {
+  private async getExchange(): Promise<void> {
     const headers: Record<string, string> = {
       "Authorization": `basic ${Token.switchToken}`
     };
@@ -166,14 +168,14 @@ export default class Auth {
     }
     this.exchange_token = exchange;
   }
-  public static get accessToken(): string {
+  public get accessToken(): string {
     return this.access_token;
   }
-  public static get exchangeToken(): string {
+  public get exchangeToken(): string {
     this.getExchange();
     return this.exchange_token;
   }
-  public static get deviceAuth(): Record<string, string> {
+  public get deviceAuth(): Record<string, string> {
     return {
       "device_id": this.device_auth.deviceId,
       "account_id": this.device_auth.accountId,

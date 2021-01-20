@@ -326,6 +326,11 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
+ansi-styles@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-5.0.0.tgz#675dbbb5ca1908fa90abe4e5b1c2e9b1f4080d99"
+  integrity sha512-6564t0m0fuQMnockqBv7wJxo9T5C2V9JpYXyNScfRDPVLusOQQhkpMGrFC17QbiolraQ1sMXX+Y5nJpjqozL4g==
+
 anymatch@~3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-3.1.1.tgz#c55ecf02185e2469259399310c173ce31233b142"
@@ -2076,6 +2081,13 @@ mimic-response@^1.0.0, mimic-response@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-1.0.1.tgz#4923538878eef42063cb8a3e3b0798781487ab1b"
   integrity sha512-j5EctnkH7amfV/q5Hgmoal1g2QHFJRraOtmx0JpIqkxhBhI/lJSl1nMpQ45hVarwNETOoWEimndZ4QK0RHxuxQ==
+
+minecraft-server-util@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/minecraft-server-util/-/minecraft-server-util-3.4.2.tgz#a5703cd82ea81ca4d6ccd0afb7bf9b0ed5e9a05a"
+  integrity sha512-4iErpsCgPzj7SyWWMJiAv6DVWWQ+89sEcKxY1BfArvOzrK/xlnwf6+Ypm7Bp29BV10hTA3UMLq+qBSzCht+fMQ==
+  dependencies:
+    ansi-styles "^5.0.0"
 
 miniget@^2.0.1:
   version "2.0.2"

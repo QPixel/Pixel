@@ -30,6 +30,7 @@
     "iso8601-duration": "^1.2.0",
     "json-beautify": "^1.1.1",
     "libsodium": "^0.7.8",
+    "minecraft-server-util": "^3.4.2",
     "pastebin-js": "^1.0.5",
     "shelljs": "^0.8.4",
     "simple-youtube-api": "^5.2.1",

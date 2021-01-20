@@ -23,13 +23,13 @@ export function createLogger(serviceName: string, prod = false): winston.Logger 
       notice: 3,
       warn: 2
     },
-    transports: [
+    transports: prod ? [
       new winston.transports.File({ filename: `logs/${serviceName}/error-${format(Date.now(), "yyyy-MM-dd-HH-mm-ss")}.log`, level: "error" }),
       new winston.transports.File({ filename: `logs/${serviceName}/logs-${format(Date.now(), "yyyy-MM-dd-HH-mm-ss")}.log` })
-    ]
+    ]: []
   });
   logger.add(new winston.transports.Console({
-    level: "info",
+    level: prod ? "info": "debug",
     format: winston.format.combine(
       winston.format.printf(info => {
         const { level, message, stack } = info;

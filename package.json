@@ -9,6 +9,8 @@
     "dev": "nodemon src/index.ts",
     "dev:debug": "nodemon --exec node --inspect=0.0.0.0:9229 --require ts-node/register src/index.ts",
     "dev:normal": "ts-node src/index.ts",
+    "debug": "node --inspect=0.0.0.0:9229 dist/index.js",
+    "debug:build": "nodemon --exec node --inspect=0.0.0.0:9229 dist/index.js",
     "compile": "tsc",
     "start": "NODE_ENV=production node dist/src/index.js"
   },
@@ -36,7 +38,7 @@
     "winston": "^3.3.3",
     "yt-search": "^2.4.2",
     "ytdl-core": "^4.0.3",
-    "ytdl-core-discord": "^1.2.4"
+    "ytdl-core-discord": "^1.2.5"
   },
   "devDependencies": {
     "@types/filesystem": "^0.0.29",

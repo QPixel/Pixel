@@ -24,6 +24,7 @@ export default Object.freeze({
   STAGING_API: "https://fortnite-public-service-stage.ol.epicgames.com/fortnite/api/version",
   PUBLIC_BASE_URL: "https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/",
   CLOUD_STORAGE: "https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/cloudstorage/system",
+  STOREFRONT: "https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/storefront/v2/catalog",
   // LIGHTSWITCH
   LIGHT_SWITCH: "https://lightswitch-public-service-prod06.ol.epicgames.com/lightswitch/api/service/bulk/status",
 });

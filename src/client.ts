@@ -37,8 +37,8 @@ export default class Client extends AkairoClient {
     this.commandHandler.useListenerHandler(this.listenerHandler);
     this.listenerHandler.loadAll();
     this.commandHandler.loadAll();
-    this.ShopHandler = new ShopHandler();
     this.auth = new Auth(this.logger, "normalStartUp");
+    this.ShopHandler = new ShopHandler(this.auth, this.logger);
     this.ManifestHandler = new ManifestHandler(this.auth);
   }
 

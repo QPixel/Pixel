@@ -8,6 +8,6 @@ export default function createEmbed(data?: IEmbed): MessageEmbed {
 interface IEmbed {
   title: string;
   fields?: EmbedField[],
-  color?: number,
+  color?: string,
   image?: MessageEmbedImage | null;
 }

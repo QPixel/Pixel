@@ -12,7 +12,8 @@ export default class CommandGetShop extends Command {
   async exec(message: Message): Promise<Message> {
     const embed = createEmbed({ title: "Uhhh is a mood" });
     embed.addField("This is my", "Mood");
-    const shop = await this.client.ShopHandler.getShop(this.client.auth.accessToken);
+    const shopresponse = await this.client.ShopHandler.getShop();
+    console.log(shopresponse);
     return message.channel.send(embed);
   }
 }

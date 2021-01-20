@@ -53,7 +53,7 @@ export default class Auth {
       } else {
         return this.handleDeviceAuth(true);
       }
-      console.log(deviceAuthBuffer);
+      // console.log(deviceAuthBuffer);
       this.device_auth = deviceAuthBuffer;
       this.access_token = await this.getOAuthToken("device_auth", deviceAuthBuffer);
     }
@@ -131,10 +131,11 @@ export default class Auth {
           },
         },
       );
+      this.logger.debug(`OAUTH Output ${JSON.stringify(client_credentials.data)}`);
       return client_credentials.data.access_token;
     }
     case "device_auth": {
-      this.logger.info("[AUTH] Requesting OAuthToken using DeviceAuth");
+      this.logger.debug("[AUTH] Requesting OAuthToken using DeviceAuth");
       await axios.post(
         Endpoints.OAUTH_TOKEN,
         stringify({

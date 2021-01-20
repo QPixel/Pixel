@@ -1,6 +1,10 @@
 import Auth from "./lib/auth";
 import Client from "./client";
 import { discordToken } from "./util/env";
+import CommandServerStatus from "./commands/minecraft/CommandServerStatus";
+import { Message } from "discord.js";
+import { TextChannel } from "discord.js";
+import requestServer from "./util/ServerRequest";
 
 export class Main {
   // private static auth: Auth;
@@ -19,6 +23,11 @@ export class Main {
       this.client.logger.info("Bot has started");
       this.client.logger.info("Guilds: " + await this.client.getGuildsCount());
       this.client.user.setPresence({ activity: { name: "with Pixels | pixel.wtf", type: "PLAYING" }, status: "online" });
+      const channel = this.client.channels.cache.find(channel => channel.id == "801256672265502720") as TextChannel;
+      requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
+      setInterval(() => {
+        requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
+      }, 300000);
     });
   }
 }

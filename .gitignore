@@ -2,7 +2,7 @@ node_modules
 workspace.code-workspace
 workspace.code-workspace
 *.code-workspace
-out
+dist
 node_modules
 node_modules/
 .env

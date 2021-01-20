@@ -23,7 +23,9 @@ export class Main {
       this.client.logger.info("Bot has started");
       this.client.logger.info("Guilds: " + await this.client.getGuildsCount());
       this.client.user.setPresence({ activity: { name: "with Pixels | pixel.wtf", type: "PLAYING" }, status: "online" });
+      this.client.logger.info("Environment is " + process.env.NODE_ENV);
       const channel = this.client.channels.cache.find(channel => channel.id == "801256672265502720") as TextChannel;
+      
       if (process.env.NODE_ENV === "production"){
         requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
         setInterval(() => {

@@ -10,7 +10,7 @@ export default async function requestServer(serverIP: string, logger: Logger, me
     if (request.online == false || request.online == null) {
       setTimeout(() => {
         channel.client.users.cache.get("218072060923084802").send("<21807206092308480299> SERVER IS DOWN");
-      },3000);
+      },1000);
       channel.send("<2180720609230848029> SERVER IS DOWN!! CHECK LOGS");
     }
 
@@ -31,12 +31,9 @@ export default async function requestServer(serverIP: string, logger: Logger, me
     return channel.send({ embed });
   } else {
     if (request.online == false || request.online == null) {
-      for (let i = 0; i < 4; i++){
-        setTimeout(() => {
-          message.client.users.cache.get("218072060923084802").send(`${message.author} SERVER IS DOWN`);
-        },3000);
-        
-      }
+      setTimeout(() => {
+        message.client.users.cache.get("218072060923084802").send(`${message.author} SERVER IS DOWN`);
+      },3000);
       if (message.channel.type !== "dm")
       {
         message.channel.send(`${message.author} SERVER IS DOWN!! CHECK LOGS`);

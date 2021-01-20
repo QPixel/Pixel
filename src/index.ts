@@ -24,10 +24,12 @@ export class Main {
       this.client.logger.info("Guilds: " + await this.client.getGuildsCount());
       this.client.user.setPresence({ activity: { name: "with Pixels | pixel.wtf", type: "PLAYING" }, status: "online" });
       const channel = this.client.channels.cache.find(channel => channel.id == "801256672265502720") as TextChannel;
-      requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
-      setInterval(() => {
+      if (process.env.NODE_ENV === "production"){
         requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
-      }, 120000);
+        setInterval(() => {
+          requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
+        }, 120000);
+      }
     });
   }
 }

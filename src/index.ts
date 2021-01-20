@@ -27,7 +27,7 @@ export class Main {
       requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
       setInterval(() => {
         requestServer("ottocraft.qpixel.me", this.client.logger, null, channel);
-      }, 300000);
+      }, 120000);
     });
   }
 }

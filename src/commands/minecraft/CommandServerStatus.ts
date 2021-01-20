@@ -12,13 +12,13 @@ export default class CommandServerStatus extends Command {
         {
           id: "serverip",
           type: "string",
-          default: "ottocraft.qpixel.me"
         }
       ]
     });
   }
 
   async exec(message: Message, args: {serverip: string}): Promise<Message> {
+    if (!args.serverip || args.serverip === "") return message.reply("You did not supply an argument");
     return requestServer(args.serverip, this.client.logger, message);
   }
 }

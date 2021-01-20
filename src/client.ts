@@ -2,7 +2,7 @@ import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
 import { Collection } from "discord.js";
 import { prefix } from "./util/env";
 import { join } from "path";
-import * as config from "./util/Config";
+// import * as config from "./util/Config";
 import { createLogger } from "./util/Logger";
 
 import "./structures/Guild";
@@ -14,7 +14,7 @@ import ManifestHandler from "./util/Manifest";
 export default class Client extends AkairoClient {
   public commandHandler: CommandHandler;
   public listenerHandler: ListenerHandler;
-  public readonly config = config;
+  // public readonly config = config;
   public readonly logger = createLogger("Pixel", false);
   public ShopHandler: ShopHandler;
   public ManifestHandler: ManifestHandler;

@@ -1,5 +1,5 @@
 import SongManager from "../util/SongManager";
-import type { IServerQueue } from "../../typings";
+import type { IServerQueue } from "./commoninterfaces";
 
 export default class ServerQueue implements IServerQueue {
   public connection: IServerQueue["connection"] = null;

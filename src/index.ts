@@ -1,8 +1,5 @@
-import Auth from "./lib/auth";
 import Client from "./client";
 import { discordToken } from "./util/env";
-import CommandServerStatus from "./commands/minecraft/CommandServerStatus";
-import { Message } from "discord.js";
 import { TextChannel } from "discord.js";
 import requestServer from "./util/ServerRequest";
 

@@ -4,7 +4,7 @@ import { Message } from "discord.js";
 import { Command } from "discord-akairo";
 import { type } from "os";
 import { create } from "domain";
-import createEmbed from "src/util/CreateEmbed";
+import createEmbed from "util/CreateEmbed";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const shell = require("shelljs");
 

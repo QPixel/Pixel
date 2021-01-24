@@ -3,12 +3,11 @@ import Command from "../../structures/BaseCommand";
 // import { VoiceConnection } from "discord.js";
 import { Message } from "discord.js";
 import createEmbed from "../../util/CreateEmbed";
-import { IGuild, IMessage, ISong } from "typings";
+import { IGuild, IMessage, ISong } from "structures/commoninterfaces";
 import ytdl from "ytdl-core";
 import ytdldiscord from "ytdl-core-discord";
 import { search } from "yt-search";
 import type { videoInfo } from "ytdl-core";
-import type Client from "../../client";
 import { VoiceChannel } from "discord.js";
 import ServerQueue from "../../structures/ServerQueue";
 
@@ -61,7 +60,8 @@ export default class CommandPlay extends Command {
         //                 "Please provide a value to select one of the search results ranging from **\`1-10\`**!").setColor("BLUE").setFooter("• Type cancel or c to cancel the song selection"));
         songInfo = await ytdl.getInfo(results.videos[0].url);
       } catch (e) {
-        // console.error(e);
+        console.error(e);
+        return message.reply("Could not find the video on youtube");
       }
     }
     return this.handleVideo(songInfo, message, voiceChannel);

@@ -1,6 +1,6 @@
 import Command from "../../structures/BaseCommand";
 import { Message } from "discord.js";
-import { IMessage } from "typings";
+import { IMessage } from "structures/commoninterfaces";
 import createEmbed from "../../util/CreateEmbed";
 
 

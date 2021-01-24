@@ -1,8 +1,8 @@
 import { performance } from "perf_hooks";
-import { IMessage } from "typings/";
+import { IMessage } from "structures/commoninterfaces";
 import { Message } from "discord.js";
 import BaseCommand from "../../structures/BaseCommand";
-import createEmbed from "src/util/CreateEmbed";
+import createEmbed from "util/CreateEmbed";
 
 
 export default class CommandAdminV2 extends BaseCommand {

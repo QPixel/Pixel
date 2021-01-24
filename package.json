@@ -6,6 +6,7 @@
   "author": "QPixel (https://qpixel.me)",
   "repository": "https://github.com/qpixel/pixel",
   "scripts": {
+    "postinstall": "yarn compile",
     "dev": "nodemon src/index.ts",
     "dev:debug": "nodemon --exec node --inspect=0.0.0.0:9229 --require ts-node/register src/index.ts",
     "dev:normal": "ts-node src/index.ts",
@@ -38,7 +39,7 @@
     "tslib": "^2.0.1",
     "winston": "^3.3.3",
     "yt-search": "^2.4.2",
-    "ytdl-core": "^4.0.3",
+    "ytdl-core": "^4.4.4",
     "ytdl-core-discord": "^1.2.5"
   },
   "devDependencies": {

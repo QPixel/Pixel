@@ -1,6 +1,7 @@
+
 import { Guild, Message, TextChannel, VoiceChannel, VoiceConnection, Collection, ClientEvents, VoiceState } from "discord.js";
 import { Command } from "discord-akairo";
-import type Client from "../src/client";
+import type Client from "client";
 
 export interface CommandComponent {
   conf: {

@@ -2,7 +2,7 @@
 import BaseCommand from "../../structures/BaseCommand";
 import { Message } from "discord.js";
 import createEmbed from "../../util/CreateEmbed";
-import { IGuild, IMessage, ISong } from "typings";
+import { IGuild, IMessage, ISong } from "structures/commoninterfaces";
 
 export default class CommandSkip extends BaseCommand {
   public constructor () {

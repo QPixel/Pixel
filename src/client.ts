@@ -6,7 +6,6 @@ import * as config from "./util/Config";
 import { createLogger } from "./util/Logger";
 
 import "./structures/Guild";
-import { Logger } from "winston";
 import ShopHandler from "./lib/ShopHandler";
 import Auth from "./lib/auth";
 import ManifestHandler from "./util/Manifest";

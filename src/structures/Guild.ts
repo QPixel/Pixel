@@ -1,6 +1,6 @@
 import { Structures } from "discord.js";
 import Client from "../client";
-import { IGuild, IServerQueue } from "../../typings";
+import { IGuild, IServerQueue } from "./commoninterfaces";
 Structures.extend("Guild", dJSGuild => class Guild extends dJSGuild implements IGuild {
   public client!: IGuild["client"];
   public queue: IServerQueue | null = null;

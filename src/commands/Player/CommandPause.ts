@@ -1,7 +1,7 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import createEmbed from "../../util/CreateEmbed";
-import { IMessage } from "typings";
+import { IMessage } from "structures/commoninterfaces";
 
 export default class CommandPause extends Command {
   public constructor () {

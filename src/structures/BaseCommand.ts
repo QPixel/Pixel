@@ -2,7 +2,7 @@ import { resolve } from "path";
 import type Client from "../client";
 import { Command, ArgumentOptions as AkarioArgumentOptions, CommandOptions as AkairoCommandOptions, Flag, ArgumentOptions, ArgumentGenerator } from "discord-akairo";
 import type { Message } from "discord.js";
-import { CommandComponent } from "typings";
+import { CommandComponent } from "./commoninterfaces";
 
 // export default class BaseCommand implements CommandComponent {
 //   public conf: CommandComponent["conf"];

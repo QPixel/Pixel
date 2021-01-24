@@ -70,7 +70,8 @@ export default class CommandPlay extends Command {
     const song: ISong = {
       id: video.videoDetails.videoId,
       title: video.videoDetails.title,
-      url: video.videoDetails.video_url
+      url: video.videoDetails.video_url,
+      imageUrl: video.videoDetails.thumbnail.thumbnails[0].url,
     };
 
     if (message.guild.queue) {
@@ -115,7 +116,7 @@ export default class CommandPlay extends Command {
     serverQueue.connection.play(songData, { type: streamtype, bitrate: "auto", highWaterMark: 1 }).on("start", () => {
       serverQueue.playing = true;
       this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has started`);
-      serverQueue.textChannel.send(createEmbed({ title: "Pixel Music" }).setDescription(`▶  **|**  Start playing: **[${song.title}](${song.url})**`).setColor("BLUE"));
+      serverQueue.textChannel.send(createEmbed({ title: "Pixel Music" }).setDescription(`▶  **|**  Start playing: **[${song.title}](${song.url})**`).setColor("BLUE").setImage(song.imageUrl));
     }).on("finish", () => {
       this.client.logger.info(`${this.client.shard ? `[Shard #${this.client.shard.ids}]` : ""} Song: "${song.title}" on ${guild.name} has ended`);
       if (serverQueue.loopMode === 0) {serverQueue.songs.deleteFirst();} else if (serverQueue.loopMode === 2) {serverQueue.songs.deleteFirst; serverQueue.songs.addSong(song);}

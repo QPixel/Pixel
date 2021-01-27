@@ -1,17 +1,18 @@
 import { TextChannel } from "discord.js";
 import { status } from "minecraft-server-util";
-import { Message, Channel } from "discord.js";
+import { Message } from "discord.js";
 import { Logger } from "winston";
 import createEmbed from "./CreateEmbed";
 
 export default async function requestServer(serverIP: string, logger: Logger, message?: Message, channel?: TextChannel): Promise<Message> {
   // const request = await axios.get(`http://mcapi.us/server/status?ip=${serverIP}`).then((res) => {return res.data;}).catch(err => logger.error("Could not get server. Error: " + err)) as ServerRequest;
-  const serverstatus = await status(serverIP).catch(() => {
+  const serverstatus = await status(serverIP).catch(async () => {
     if (channel) {
+      const qpixeluser = await channel.client.users.fetch("218072060923084802", true, false);
       setTimeout(() => {
-        channel.client.users.cache.get("218072060923084802").send("<21807206092308480299> SERVER IS DOWN");
+        qpixeluser.send(`${qpixeluser} SERVER IS DOWN`);
       },1000);
-      channel.send("<2180720609230848029> SERVER IS DOWN!! CHECK LOGS");
+      channel.send(`${qpixeluser} SERVER IS DOWN!! CHECK LOGS`);
     } else if (message) {
       setTimeout(() => {
         message.client.users.cache.get("218072060923084802").send(`${message.author} SERVER IS DOWN`);

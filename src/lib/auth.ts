@@ -131,7 +131,6 @@ export default class Auth {
           },
         },
       );
-      this.logger.debug(`OAUTH Output ${JSON.stringify(client_credentials.data)}`);
       return client_credentials.data.access_token;
     }
     case "device_auth": {

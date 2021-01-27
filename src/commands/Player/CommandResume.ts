@@ -18,7 +18,7 @@ export default class CommandResume extends Command {
     if (!message.guild.queue.playing) {
       message.guild.queue.playing = true;
       message.guild.queue.connection.dispatcher.resume();
-      return message.channel.send(createEmbed().setDescription(":play_button: **|** Music has been resumed").setColor("BLUE"));
+      return message.channel.send(createEmbed().setDescription(":arrow_forward: **|** Music has been resumed").setColor("BLUE"));
     }
     return message.channel.send(createEmbed().setDescription("Music is already playing").setColor("YELLOW"));
   }
